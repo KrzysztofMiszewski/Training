@@ -16,4 +16,27 @@ public class Word{
 		this.polish = polish;
 	}
 	
+	public void setNextWord(Word nextWord){
+		this.nextWord = nextWord;
+	}
+	
+	public void setPreviousWord(Word previousWord){
+		this.previousWord = previousWord;
+	}
+	
+	public Word getNextWord(){
+		return nextWord;
+	}
+	
+	public Word getPreviousWord(){
+		return previousWord;
+	}
+	
+	public String getPolish(){
+		return polish;
+	}
+	
+	public void printWord(){
+		System.out.println(kanji + " " + onyomi + " " + kunyomi + " " + polish);
+	}
 }

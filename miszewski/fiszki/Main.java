@@ -1,21 +1,19 @@
 package miszewski.fiszki;
 
-import java.lang.UnsupportedOperationException.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
-public class Menu{
-		
-	private final Pattern pattern = Pattern.compile("^(.*?);(.*?);(.*?);(.*?)$");
+public class Main{
+	
+	private final Pattern pattern = Pattern.compile("(.*?);(.*?);(.*?);(.*)");
 	
 	private final int MENU_EXIT = 0;
 	private final int LOAD_FILE = 1;
 	private WordList wl;
-	
-	public Menu(){
-		
-	}
 	
 	public void start(){
 		do {
@@ -27,7 +25,7 @@ public class Menu{
 				case MENU_EXIT:
 					System.exit(0);
 				case LOAD_FILE:
-					LoadFile();
+					loadFile();
 					break;
 				default:
 					System.out.println("Zly numer");
@@ -35,19 +33,22 @@ public class Menu{
 		} while (true);
 	}
 	
-	private void LoadFile(){
+	private void loadFile(){
 		if (this.wl == null){
-			path = "miszewski\\fiszki\\library.txt";
-			Scanner sc = new Scanner(path);
-			WordList wl = new WordList();
-			while (sc.hasNextLine()){
-				String line = sc.nextLine();
-				Word word = createWord(line);
-				wl.addWord(word);
+			Path path = Paths.get("miszewski\\fiszki\\library.txt");
+			try (Scanner sc = new Scanner(path)) {
+				WordList wl = new WordList();
+				while (sc.hasNextLine()){
+					String line = sc.nextLine();
+					Word word = createWord(line);
+					wl.addWord(word);
+				}
+				System.out.println("Plik wczytany");
+			} catch (IOException exs){
+				System.out.println("Brak pliku");
 			}
-		System.out.println("Plik wczytany");
 		} else {
-			System.out.println("Plik juz zostal wczytany wczytany");
+			System.out.println("Plik juz zostal wczytany");
 		}
 	}
 	
@@ -64,7 +65,7 @@ public class Menu{
 		sc.close();
 		return word;
 	}
-
+	
 	private String getUserInput(String msg) {
         System.out.print("-->>> " + msg);
         return System.console().readLine();
